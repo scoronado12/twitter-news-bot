@@ -31,7 +31,8 @@ def main():
 
     auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
 
-    api = tweet.API(auth,wait_on_rate_limit=True, wait_on_rate_limit_notify = True)
+    api = tweet.API(auth,wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
+    
     
     newest_mention = get_latest_tweet(api)
     
@@ -43,7 +44,7 @@ def main():
 def reply_to_tweet(api, newest_mention):
     
     try:
-        if newest_mention.text == "@BotNeno ping":
+        if newest_mention.text == "@NenoSong ping":
             api.update_status('@' + newest_mention.user.screen_name + " pong", newest_mention.id)
             print("pong!")
     except tweet.error.TweepError: #try not to respond again on the next query
@@ -53,11 +54,17 @@ def get_latest_tweet(api):
 
     mentions = api.mentions_timeline() #list of all tweets where @BotNeno is mentioned
     
-    newest_mention = mentions[0]
+    try:
+        newest_mention = mentions[0]
+        print("Latest Tweet", newest_mention.id ,'-', newest_mention.text , "from" , newest_mention.user.screen_name)
+        return newest_mention #return the entire instance to for next func to reply referencing the id
     
-    print("Latest Tweet", newest_mention.id ,'-', newest_mention.text , "from" , newest_mention.user.screen_name)
+    except IndexError:
+        print("Nobody has tweeted to this account!")
+        time.sleep(60)
+        main()
+        
     
-    return newest_mention #return the entire instance to for next func to reply referencing the id
     
     
     
