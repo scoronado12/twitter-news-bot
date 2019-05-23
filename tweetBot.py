@@ -51,20 +51,17 @@ def reply_to_tweet(api, newest_mention):
         print("Already responded to this!")
     
 def get_latest_tweet(api):
-
-    mentions = api.mentions_timeline() #list of all tweets where @BotNeno is mentioned
-    
     try:
-        newest_mention = mentions[0]
-        print("Latest Tweet", newest_mention.id ,'-', newest_mention.text , "from" , newest_mention.user.screen_name)
-        return newest_mention #return the entire instance to for next func to reply referencing the id
+        mentions = api.mentions_timeline() #list of all tweets where NenoSong is mentioned
     
-    except IndexError:
-        print("Nobody has tweeted to this account!")
-        time.sleep(60)
-        main()
         
-    
+        newest_mention = mentions[0]
+        
+        print("Latest Tweet", newest_mention.id ,'-', newest_mention.text , "from" , newest_mention.user.screen_name)
+    except IndexError:
+        print("Tweet to this account before trying again")
+        exit(1)
+    return newest_mention #return the entire instance to for next func to reply referencing the id
     
     
     
