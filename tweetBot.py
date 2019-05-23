@@ -1,5 +1,6 @@
 # Twitter Bot
 import tweepy as tweet
+import tswift as ts
 import time
 
 def main():
@@ -9,18 +10,15 @@ def main():
         keyfile = open("apikeys.txt", 'r')
 
         keys = []
-
         for line in range (0,4):
             keys.append(keyfile.readline().rstrip())
 
         CONSUMER_KEY = keys[0]
-
         CONSUMER_SECRET = keys[1]
-
         ACCESS_KEY = keys[2]
-
         ACCESS_SECRET = keys[3]
         
+        keyfile.close()
     except:
         print("An Unknown Error has occured importing the API Keys")
         print("Make sure the API Keys are properly formatted into apikeys.txt")
@@ -39,6 +37,29 @@ def main():
     reply_to_tweet(api, newest_mention)
     
     
+
+
+
+
+def song_lookup(song_lyric):
+    
+    song_lyric = song_lyric.split(' ', 1)[1]
+    #mod_song_lyric = song_lyric.split(' ' ,1)[1]
+    
+    
+    print("Song Lyrics:" , song_lyric)
+    
+    the_song = ts.Song.find_song(song_lyric)
+    
+    if the_song != None:
+        song_artist = the_song.title + " by " + the_song.artist
+    else:
+        song_artist = "Sorry! I don't recognize those lyrics"
+    
+    return song_artist
+    
+    
+    
     
     
 def reply_to_tweet(api, newest_mention):
@@ -47,6 +68,10 @@ def reply_to_tweet(api, newest_mention):
         if newest_mention.text == "@NenoSong ping":
             api.update_status('@' + newest_mention.user.screen_name + " pong", newest_mention.id)
             print("pong!")
+        else:
+            song_info = song_lookup(newest_mention.text)
+            api.update_status('@' + newest_mention.user.screen_name + " " + song_info, newest_mention.id)
+            print("Sent song info")
     except tweet.error.TweepError: #try not to respond again on the next query
         print("Already responded to this!")
     
