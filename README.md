@@ -1,6 +1,6 @@
 # twitterbot
 
-This is my Twitter Bot, as of now it is supposed to simply connect to a twitter account and respond "pong" when you tweet "ping".
+This is the script that runs the @nenoSong account on Twitter
 
 # Usage
 
@@ -23,4 +23,4 @@ If it does not respond, then @BotNeno may have been ratelimited or I don't have 
     
 # Depends
 
-`python 3` alongside the `tweepy`, and `twswift` modules avaliable from pip
+`python 3` alongside the `tweepy`, and `tswift` modules avaliable from pip
