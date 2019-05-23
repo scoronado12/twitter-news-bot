@@ -3,23 +3,31 @@ import tweepy as tweet
 import time
 
 def main():
+    
     print("Bot is running")
-    keyfile = open("apikeys.txt", 'r')
+    try:
+        keyfile = open("apikeys.txt", 'r')
 
-    keys = []
+        keys = []
 
-    for line in range (0,4):
-        keys.append(keyfile.readline().rstrip())
+        for line in range (0,4):
+            keys.append(keyfile.readline().rstrip())
 
 
-    CONSUMER_KEY = keys[0]
+        CONSUMER_KEY = keys[0]
 
-    CONSUMER_SECRET = keys[1]
+        CONSUMER_SECRET = keys[1]
 
-    ACCESS_KEY = keys[2]
+        ACCESS_KEY = keys[2]
 
-    ACCESS_SECRET = keys[3]
-
+        ACCESS_SECRET = keys[3]
+        
+    except:
+        print("An Unknown Error has occured importing the API Keys")
+        print("Make sure the API Keys are properly formatted into apikeys.txt")
+        exit(1)
+        
+        
     auth = tweet.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 
     auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
@@ -34,13 +42,17 @@ def main():
     
     
 def reply_to_tweet(api, newest_mention):
-    if newest_mention.text == "@BotNeno ping":
-        print("pong!")
-        api.update_status('@' + newest_mention.user.screen_name + " pong", newest_mention.id)
+    
+    try:
+        if newest_mention.text == "@BotNeno ping":
+            print("pong!")
+            api.update_status('@' + newest_mention.user.screen_name + " pong", newest_mention.id)
+    except tweet.error.TweepError: #try not to respond again on the next query
+        print("Already responded to this!")
     
 def get_latest_tweet(api):
 
-    mentions = api.mentions_timeline()
+    mentions = api.mentions_timeline() #list of all tweets where @BotNeno is mentioned
     
     newest_mention = mentions[0]
     
@@ -51,4 +63,4 @@ def get_latest_tweet(api):
 
 while True:
     main()
-    time.sleep(5)
+    time.sleep(30) #refresh every 30 seconds
