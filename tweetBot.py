@@ -24,22 +24,31 @@ def main():
 
     auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
 
-    api = tweet.API(auth)
+    api = tweet.API(auth,wait_on_rate_limit=True, wait_on_rate_limit_notify = True)
+    
+    newest_mention = get_latest_tweet(api)
+    
+    reply_to_tweet(api, newest_mention)
+    
+    
+    
+    
+def reply_to_tweet(api, newest_mention):
+    if newest_mention.text == "@BotNeno ping":
+        print("pong!")
+        api.update_status('@' + newest_mention.user.screen_name + " pong", newest_mention.id)
+    
+def get_latest_tweet(api):
 
     mentions = api.mentions_timeline()
-
-    for mention in mentions:
-        print(str(mention.id)+ ' ' + mention.text)
-        add_to_known_mentions(mention.id)
-    print("EOF")
-
-def add_to_known_mentions(mention_id):
-
-    known_mentions_file = open("known_mentions.txt", 'r+')
-
-
-
+    
+    newest_mention = mentions[0]
+    
+    print("Latest Tweet", newest_mention.id ,'-', newest_mention.text , "from" , newest_mention.user.screen_name)
+    
+    return newest_mention #return the entire instance to for next func to reply referencing the id
+    
 
 while True:
     main()
-    time.sleep(60)
+    time.sleep(5)
