@@ -44,8 +44,8 @@ def reply_to_tweet(api, newest_mention):
     
     try:
         if newest_mention.text == "@BotNeno ping":
-            print("pong!")
             api.update_status('@' + newest_mention.user.screen_name + " pong", newest_mention.id)
+            print("pong!")
     except tweet.error.TweepError: #try not to respond again on the next query
         print("Already responded to this!")
     
@@ -64,4 +64,4 @@ def get_latest_tweet(api):
 print("Bot is running")
 while True:
     main()
-    time.sleep(30) #refresh every 30 seconds
+    time.sleep(60) #refresh every 60 seconds
