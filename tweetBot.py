@@ -3,8 +3,8 @@ import tweepy as tweet
 import time
 
 def main():
+    print("Refreshing...")
     
-    print("Bot is running")
     try:
         keyfile = open("apikeys.txt", 'r')
 
@@ -12,7 +12,6 @@ def main():
 
         for line in range (0,4):
             keys.append(keyfile.readline().rstrip())
-
 
         CONSUMER_KEY = keys[0]
 
@@ -60,7 +59,9 @@ def get_latest_tweet(api):
     
     return newest_mention #return the entire instance to for next func to reply referencing the id
     
-
+    
+    
+print("Bot is running")
 while True:
     main()
     time.sleep(30) #refresh every 30 seconds
