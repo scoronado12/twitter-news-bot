@@ -44,7 +44,6 @@ def main():
 def song_lookup(song_lyric):
     
     song_lyric = song_lyric.split(' ', 1)[1]
-    #mod_song_lyric = song_lyric.split(' ' ,1)[1]
     
     
     print("Song Lyrics:" , song_lyric)
@@ -69,10 +68,18 @@ def reply_to_tweet(api, newest_mention):
             api.update_status('@' + newest_mention.user.screen_name + " pong", newest_mention.id)
             print("pong!")
         else:
-            song_info = song_lookup(newest_mention.text)
-            api.update_status('@' + newest_mention.user.screen_name + " " + song_info, newest_mention.id)
-            print("Sent song info")
-    except tweet.error.TweepError: #try not to respond again on the next query
+            if "\n" in newest_mention.text: #if the newest_mention contains newlines
+                print("@" + newest_mention.user.screen_name +  "Didn't tweet one line")
+
+                api.update_status('@' + newest_mention.user.screen_name + " Please write one line", newest_mention.id)
+
+
+            else:
+                song_info = song_lookup(newest_mention.text)
+                api.update_status('@' + newest_mention.user.screen_name + " " + song_info, newest_mention.id)
+                print("Sent song info")
+
+    except tweet.error.TweepError: #a dirty hack to prevent multiple responses to a tweet
         print("Already responded to this!")
     
 def get_latest_tweet(api):
