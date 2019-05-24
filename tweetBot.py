@@ -51,7 +51,10 @@ def song_lookup(song_lyric):
     the_song = ts.Song.find_song(song_lyric)
     
     if the_song != None:
-        song_artist = the_song.title + " by " + the_song.artist
+        #TODO find a better way to retrieve the artist
+        #song_artist = the_song.title + " by " + the_song.artist
+
+        song_artist = "That song is called " + the_song.title
     else:
         song_artist = "Sorry! I don't recognize those lyrics"
     
@@ -69,9 +72,9 @@ def reply_to_tweet(api, newest_mention):
             print("pong!")
         else:
             if "\n" in newest_mention.text: #if the newest_mention contains newlines
-                print("@" + newest_mention.user.screen_name +  "Didn't tweet one line")
+                print("@" + newest_mention.user.screen_name +  " Didn't tweet one line")
 
-                api.update_status('@' + newest_mention.user.screen_name + " Please write one line", newest_mention.id)
+                api.update_status('@' + newest_mention.user.screen_name + " Please write one line without line breaks", newest_mention.id)
 
 
             else:
@@ -81,12 +84,13 @@ def reply_to_tweet(api, newest_mention):
 
     except tweet.error.TweepError: #a dirty hack to prevent multiple responses to a tweet
         print("Already responded to this!")
-    
+
+
 def get_latest_tweet(api):
+    # try-except because mentions will return an empty list if there are no tweets to this account    
     try:
         mentions = api.mentions_timeline() #list of all tweets where NenoSong is mentioned
     
-        
         newest_mention = mentions[0]
         
         print("Latest Tweet", newest_mention.id ,'-', newest_mention.text , "from" , newest_mention.user.screen_name)
