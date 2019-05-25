@@ -1,4 +1,5 @@
 # Twitter Bot
+# by Stefano C. Coronado
 import tweepy as tweet
 import tswift as ts
 import time
@@ -32,8 +33,8 @@ def main():
     api = tweet.API(auth,wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
     
     
-    newest_mention = get_latest_tweet(api)
-    all_tweets = api.mentions_timeline()
+    newest_mention, all_tweets = get_latest_tweets(api)
+    #all_tweets = api.mentions_timeline()
 
     reply_to_tweet(api, newest_mention, all_tweets)
     
@@ -49,9 +50,8 @@ def song_lookup(song_lyric):
     
     if the_song != None:
         #TODO find a better way to retrieve the artist
-        #song_artist = the_song.title + " by " + the_song.artist
 
-        song_artist = "That song is called " + the_song.title
+        song_artist = "That song is called " + the_song.title + " by " + the_song.artist
     else:
         song_artist = "Sorry! I don't recognize those lyrics"
     
@@ -62,12 +62,11 @@ def reply_to_tweet(api, newest_mention, all_tweets):
 
     #load tweet ids into array
 
-    already_replied_ids = []
+    already_replied = []
 
-    for tweet_id in all_tweets:
-        already_replied_ids.append(all_tweets.id)
-
-    if newest_mention.id not in already_replied_ids:
+    for mention in all_tweets:
+        already_replied.append(mention.id)
+    if newest_mention.id not in already_replied:
 
 
         if newest_mention.text == "@NenoSong ping":
@@ -88,7 +87,7 @@ def reply_to_tweet(api, newest_mention, all_tweets):
 
 
 
-def get_latest_tweet(api):
+def get_latest_tweets(api):
     # try-except because mentions will return an empty list if there are no tweets to this account    
     try:
         mentions = api.mentions_timeline() #list of all tweets where NenoSong is mentioned
@@ -98,7 +97,7 @@ def get_latest_tweet(api):
     except IndexError:
         print("Tweet to this account before trying again")
         exit(1)
-    return newest_mention #return the entire instance to for next func to reply referencing the id
+    return newest_mention, mentions #return the entire instance to for next func to reply referencing the id
     
     
     
