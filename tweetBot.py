@@ -33,14 +33,11 @@ def main():
     
     
     newest_mention = get_latest_tweet(api)
+    all_tweets = api.mentions_timeline()
+
+    reply_to_tweet(api, newest_mention, all_tweets)
     
-    reply_to_tweet(api, newest_mention)
     
-    
-
-
-
-
 def song_lookup(song_lyric):
     
     song_lyric = song_lyric.split(' ', 1)[1]
@@ -61,12 +58,18 @@ def song_lookup(song_lyric):
     return song_artist
     
     
-    
-    
-    
-def reply_to_tweet(api, newest_mention):
-    
-    try:
+def reply_to_tweet(api, newest_mention, all_tweets):
+
+    #load tweet ids into array
+
+    already_replied_ids = []
+
+    for tweet_id in all_tweets:
+        already_replied_ids.append(all_tweets.id)
+
+    if newest_mention.id is not in already_replied_ids:
+
+
         if newest_mention.text == "@NenoSong ping":
             api.update_status('@' + newest_mention.user.screen_name + " pong", newest_mention.id)
             print("pong!")
@@ -75,22 +78,20 @@ def reply_to_tweet(api, newest_mention):
                 print("@" + newest_mention.user.screen_name +  " Didn't tweet one line")
 
                 api.update_status('@' + newest_mention.user.screen_name + " Please write one line without line breaks", newest_mention.id)
-
-
             else:
                 song_info = song_lookup(newest_mention.text)
                 api.update_status('@' + newest_mention.user.screen_name + " " + song_info, newest_mention.id)
                 print("Sent song info")
+        else:
 
-    except tweet.error.TweepError: #a dirty hack to prevent multiple responses to a tweet
-        print("Already responded to this!")
+            print("Already responded to this tweet")
+
 
 
 def get_latest_tweet(api):
     # try-except because mentions will return an empty list if there are no tweets to this account    
     try:
         mentions = api.mentions_timeline() #list of all tweets where NenoSong is mentioned
-    
         newest_mention = mentions[0]
         
         print("Latest Tweet", newest_mention.id ,'-', newest_mention.text , "from" , newest_mention.user.screen_name)
