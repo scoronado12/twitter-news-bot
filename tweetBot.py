@@ -67,7 +67,7 @@ def reply_to_tweet(api, newest_mention, all_tweets):
     for tweet_id in all_tweets:
         already_replied_ids.append(all_tweets.id)
 
-    if newest_mention.id is not in already_replied_ids:
+    if newest_mention.id not in already_replied_ids:
 
 
         if newest_mention.text == "@NenoSong ping":
@@ -82,9 +82,9 @@ def reply_to_tweet(api, newest_mention, all_tweets):
                 song_info = song_lookup(newest_mention.text)
                 api.update_status('@' + newest_mention.user.screen_name + " " + song_info, newest_mention.id)
                 print("Sent song info")
-        else:
+    else:
 
-            print("Already responded to this tweet")
+        print("Already responded to this tweet")
 
 
 
