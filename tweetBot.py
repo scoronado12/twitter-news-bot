@@ -5,7 +5,7 @@ import tswift as ts
 import time
 
 def main():
-    print("Refreshing...")
+    print("\nRefreshing...")
     
     try:
         keyfile = open("apikeys.txt", 'r')
@@ -64,10 +64,7 @@ def reply_to_tweet(api, newest_mention, all_tweets):
 
     already_replied = []
 
-    #for mention in all_tweets:   
-        #already_replied.append(mention.id)
-
-    for i in range(1,len(all_tweets)): # want everything except for the first tweet
+    for i in range(0,len(all_tweets) - 2): # want everything except for the first tweet
         already_replied.append(all_tweets[i].id)
 
 
