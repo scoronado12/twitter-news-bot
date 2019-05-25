@@ -64,8 +64,13 @@ def reply_to_tweet(api, newest_mention, all_tweets):
 
     already_replied = []
 
-    for mention in all_tweets:
-        already_replied.append(mention.id)
+    #for mention in all_tweets:   
+        #already_replied.append(mention.id)
+
+    for i in range(1,len(all_tweets)): # want everything except for the first tweet
+        already_replied.append(all_tweets[i].id)
+
+
     if newest_mention.id not in already_replied:
 
 
