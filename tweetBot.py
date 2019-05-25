@@ -5,7 +5,6 @@ import tswift as ts
 import time
 
 def main():
-    print("\nRefreshing...")
     
     try:
         keyfile = open("apikeys.txt", 'r')
@@ -32,11 +31,13 @@ def main():
 
     api = tweet.API(auth,wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
     
-    
-    newest_mention, all_tweets = get_latest_tweets(api)
-    #all_tweets = api.mentions_timeline()
+    while True:
+        print("\nRefreshing...")
+        newest_mention, all_tweets = get_latest_tweets(api)
+        #all_tweets = api.mentions_timeline()
 
-    reply_to_tweet(api, newest_mention, all_tweets)
+        reply_to_tweet(api, newest_mention, all_tweets)
+        time.sleep(60)
     
     
 def song_lookup(song_lyric):
@@ -104,6 +105,4 @@ def get_latest_tweets(api):
     
     
 print("Bot is running")
-while True:
-    main()
-    time.sleep(60) #refresh every 60 seconds
+main()
