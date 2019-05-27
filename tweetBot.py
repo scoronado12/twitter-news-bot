@@ -58,36 +58,39 @@ def song_lookup(song_lyric):
     
     return song_artist
     
-    
+
+
 def reply_to_tweet(api, newest_mention, all_tweets):
 
     #load tweet ids into array
 
     already_replied = []
 
-    for i in range(0,len(all_tweets) - 2): # want everything except for the first tweet
-        already_replied.append(all_tweets[i].id)
+    for i in range(1,len(all_tweets)): # want everything except for the first tweet
+        already_replied.append(all_tweets[i])
+    try:
 
 
-    if newest_mention.id not in already_replied:
+        if newest_mention.id != already_replied[0].id:
 
 
-        if newest_mention.text == "@NenoSong ping":
-            api.update_status('@' + newest_mention.user.screen_name + " pong", newest_mention.id)
-            print("pong!")
-        else:
-            if "\n" in newest_mention.text: #if the newest_mention contains newlines
-                print("@" + newest_mention.user.screen_name +  " Didn't tweet one line")
-
-                api.update_status('@' + newest_mention.user.screen_name + " Please write one line without line breaks", newest_mention.id)
+            if newest_mention.text == "@NenoSong ping":
+                api.update_status('@' + newest_mention.user.screen_name + " pong", newest_mention.id)
+                print("pong!")
             else:
-                song_info = song_lookup(newest_mention.text)
-                api.update_status('@' + newest_mention.user.screen_name + " " + song_info, newest_mention.id)
-                print("Sent song info")
-    else:
+                if "\n" in newest_mention.text: #if the newest_mention contains newlines
+                    print("@" + newest_mention.user.screen_name +  " Didn't tweet one line")
 
-        print("Already responded to this tweet")
+                    api.update_status('@' + newest_mention.user.screen_name + " Please write one line without line breaks", newest_mention.id)
+                else:
+                    song_info = song_lookup(newest_mention.text)
+                    api.update_status('@' + newest_mention.user.screen_name + " " + song_info, newest_mention.id)
+                    print("Sent song info")
+        else:
 
+            print("Already responded to this tweet")
+    except tweet.error.TweepError:
+        print("Status is duplicate")
 
 
 def get_latest_tweets(api):
