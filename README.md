@@ -19,7 +19,7 @@ You can test this bot for now by Tweeting "ping" to @NenoSong, it should respond
 
 @NenoSong will respond with the name of the song that you have tweeted to it.
 
-If it does not respond, then @BotNeno may have been ratelimited or I don't have script running.
+If it does not respond, then @nenoSong may have been ratelimited or I don't have script running.
     
 # Depends
 
