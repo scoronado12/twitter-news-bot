@@ -38,26 +38,25 @@ def main():
 
         reply_to_tweet(api, newest_mention, all_tweets)
         time.sleep(60)
-    
-    
+
 def song_lookup(song_lyric):
-    
+
     song_lyric = song_lyric.split(' ', 1)[1]
-    
-    
+
+
     print("Song Lyrics:" , song_lyric)
-    
+
     the_song = ts.Song.find_song(song_lyric)
-    
+
     if the_song != None:
         #TODO find a better way to retrieve the artist
 
         song_artist = "That song is called " + the_song.title + " by " + the_song.artist
     else:
         song_artist = "Sorry! I don't recognize those lyrics"
-    
+
     return song_artist
-    
+
 
 
 def reply_to_tweet(api, newest_mention, all_tweets):
@@ -98,14 +97,11 @@ def get_latest_tweets(api):
     try:
         mentions = api.mentions_timeline() #list of all tweets where NenoSong is mentioned
         newest_mention = mentions[0]
-        
         print("Latest Tweet", newest_mention.id ,'-', newest_mention.text , "from" , newest_mention.user.screen_name)
     except IndexError:
         print("Tweet to this account before trying again")
         exit(1)
     return newest_mention, mentions #return the entire instance to for next func to reply referencing the id
-    
-    
-    
+
 print("Bot is running")
 main()
