@@ -1,6 +1,6 @@
 # twitterbot
 
-This is the script that runs the @nenoSong account on Twitter
+This is the script that aggregates headlines from different RSS Feeds 
 
 # Usage
 
@@ -14,13 +14,9 @@ Create a file, apikeys.txt and fill in the Twitter API Keys in this order. If yo
 
 # Testing 
 
+Watching this one account on twitter tweet the headlines every hour.
 
-You can test this bot for now by Tweeting "ping" to @NenoSong, it should respond "pong"
-
-@NenoSong will respond with the name of the song that you have tweeted to it.
-
-If it does not respond, then @nenoSong may have been ratelimited or I don't have script running.
-    
 # Depends
 
-`python 3` alongside the `tweepy`, and `tswift` modules avaliable from pip
+`pipenv` will handle pip dependencies for you.
+
