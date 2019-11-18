@@ -50,7 +50,7 @@ def formulate_npr_tweet(api):
     try:
         current_date_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M hrs")
 
-        message = current_date_time + " Live from NPR News in Washington (1/5)\n"
+        message = current_date_time + " Live from NPR News in Washington (1/4)\n"
 
         npr_feed = fp.parse("https://www.npr.org/rss/rss.php?id=1001")
         #TODO optimize later 15 headlines will go out in a series of five tweets
