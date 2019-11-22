@@ -1,0 +1,6 @@
+[Unit]
+Description=Twitter News Bot
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 ~/Code/tweetBot.py

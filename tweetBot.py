@@ -36,11 +36,9 @@ def main():
 
 
 
-    while True:
 
-        formulate_npr_tweet(twitter)
-
-        time.sleep(3600) #one hour. Make sure you run this on the 30th minute or on the 00th minute 
+    formulate_npr_tweet(twitter)
+    exit(0)
 
 
 
@@ -48,47 +46,29 @@ def main():
 def formulate_npr_tweet(api):
     #We will post the latest four headlines
     try:
-        current_date_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M hrs")
 
-        message = current_date_time + " Live from NPR News in Washington (1/4)\n"
+        current_date_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M hrs")
+        #message = current_date_time + " Live from NPR News in Washington ("+ str(th_tweet) + "/5)\n"
 
         npr_feed = fp.parse("https://www.npr.org/rss/rss.php?id=1001")
-        #TODO optimize later 15 headlines will go out in a series of five tweets
-
-        for i in range(0,3):
-            message += " - " + npr_feed.entries[i].title + "\n"
-
-        print(message)
-        api.update_status(message)
-
-        message = "(2/4)\n"
-
-        for i in range(4,7):
-            message += " - " + npr_feed.entries[i].title + "\n"
-
-        print(message)
-        api.update_status(message)
-
-        message = "(3/4)\n"
+        headlines = [] # list of strings
+        for i in range(15):
+            headlines.append(" - " + npr_feed.entries[i].title)
 
 
-        for i in range(8,11):
-            message += " - " + npr_feed.entries[i].title + "\n"
+        low_range = 0
+        high_range = 3
+        for i in range (5):
+            message = ""
+            for indeces in range(low_range, high_range):
+                message += headlines[indeces] + "\n"
+            print(message)
+            low_range += 3
+            high_range += 3
 
-        print(message)
-        api.update_status(message)
 
 
-        message = "(4/4)\n"
 
-        for i in range(12,15):
-            message +=  " - " + npr_feed.entries[i].title + "\n"
-
-        #detect that the last dash has been printed
-        message += "END OF LINE\n For more details, please visit https://npr.org/"
-        print(message)
-
-        api.update_status(message)
     except tweet.error.TweepError:
         print("ERROR One of these statuses have been run already")
 
