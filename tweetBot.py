@@ -34,43 +34,46 @@ def main():
 
     twitter = tweet.API(auth ,wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 
-
-
-
     formulate_npr_tweet(twitter)
+
     exit(0)
 
 
 
 
 def formulate_npr_tweet(api):
-    #We will post the latest four headlines
     try:
 
         current_date_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M hrs")
-        #message = current_date_time + " Live from NPR News in Washington ("+ str(th_tweet) + "/5)\n"
 
         npr_feed = fp.parse("https://www.npr.org/rss/rss.php?id=1001")
         headlines = [] # list of strings
+
+
         for i in range(15):
             headlines.append(" - " + npr_feed.entries[i].title)
 
 
         low_range = 0
         high_range = 3
+
         for i in range (5):
-            message = ""
+            if i == 0:
+                message = "From NPR News on " + current_date_time + "(" + str(i+1) + "/5)\n"
+            else:
+                message = "("+ str(i+1) + "/5)\n"
+
             for indeces in range(low_range, high_range):
                 message += headlines[indeces] + "\n"
-            print(message)
+            time.sleep(5)
+            #print(len(message))
+            api.update_status(message)
             low_range += 3
             high_range += 3
 
-
-
-
     except tweet.error.TweepError:
-        print("ERROR One of these statuses have been run already")
+        print("An unknown error has occured")
+        exit(0)
 
 print("Bot is running")
 main()
