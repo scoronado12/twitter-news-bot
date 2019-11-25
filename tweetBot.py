@@ -34,14 +34,40 @@ def main():
 
     twitter = tweet.API(auth ,wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 
-    formulate_npr_tweet(twitter)
-
+    #formulate_npr_tweet(twitter)
+    formulate_bbc_tweet(twitter)
     exit(0)
 
 
 
+def formulate_bbc_tweet(api):
+    '''This function aggregates the BBC world news feed and splits the headlines'''
+    try:
+
+        #TODO send 7 tweets of four headlines
+        bbc_feed = fp.parse("http://feeds.bbci.co.uk/news/world/rss.xml#")
+
+
+        headlines = []
+
+        for i in range(len(bbc_feed.entries)):
+           headlines.append (" -  " + bbc_feed.entries[i].title)
+
+        for headline in headlines:
+            print(headline)
+
+
+
+    except tweet.error.TweepError:
+            print("An unknown error has occured")
+            exit(0)
+
+
 
 def formulate_npr_tweet(api):
+
+    '''This function aggregates the NPR RSS Feed and splits the headlines into
+                a series of five tweets'''
     try:
 
         current_date_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M hrs")
@@ -67,7 +93,7 @@ def formulate_npr_tweet(api):
                 message += headlines[indeces] + "\n"
             time.sleep(5)
             #print(len(message))
-            api.update_status(message)
+            #api.update_status(message)
             low_range += 3
             high_range += 3
 
