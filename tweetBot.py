@@ -53,8 +53,24 @@ def formulate_bbc_tweet(api):
         for i in range(len(bbc_feed.entries)):
            headlines.append (" -  " + bbc_feed.entries[i].title)
 
-        for headline in headlines:
-            print(headline)
+        low_range = 0
+        high_range = 4
+
+        for i in range (7):
+
+            if i == 0:
+                message = "From NPR News on " + current_date_time + "(" + str(i+1) + "/5)\n"
+            else:
+                message = "("+ str(i+1) + "/5)\n"
+
+            for indeces in range(low_range, high_range):
+                message += headlines[indeces] + "\n"
+            time.sleep(5) # eliminate possibility of getting ratelimited
+            #print(len(message))
+            #api.update_status(message)
+            low_range += 4
+            high_range += 4
+
 
 
 
@@ -68,6 +84,8 @@ def formulate_npr_tweet(api):
 
     '''This function aggregates the NPR RSS Feed and splits the headlines into
                 a series of five tweets'''
+
+
     try:
 
         current_date_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M hrs")
@@ -91,7 +109,7 @@ def formulate_npr_tweet(api):
 
             for indeces in range(low_range, high_range):
                 message += headlines[indeces] + "\n"
-            time.sleep(5)
+            time.sleep(5) # eliminate possibility of getting ratelimited
             #print(len(message))
             #api.update_status(message)
             low_range += 3
