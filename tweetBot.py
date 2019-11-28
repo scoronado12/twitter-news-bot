@@ -34,8 +34,8 @@ def main():
 
     twitter = tweet.API(auth ,wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 
-    formulate_npr_tweet(twitter)
-    formulate_bbc_tweet(twitter)
+    #formulate_npr_tweet(twitter)
+    #formulate_bbc_tweet(twitter)
     formulate_nytimes_tweet(twitter)
     exit(0)
 
@@ -60,7 +60,7 @@ def formulate_nytimes_tweet(api):
                 message += headlines[indeces] + "\n"
 
             time.sleep(5)
-            print(message)
+            #print(message)
             api.update_status(message)
             low_range += 2
             high_range += 2
