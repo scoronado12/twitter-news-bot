@@ -130,10 +130,7 @@ def formulate_npr_tweet(api):
         high_range = 3
 
         for i in range (5):
-            if i == 0:
-                message = "From NPR News (" + str(i+1) + "/5)\n"
-            else:
-                message = "("+ str(i+1) + "/5)\n"
+            message = "From NPR News (" + str(i+1) + "/5)\n"
 
             for indeces in range(low_range, high_range):
                 message += headlines[indeces] + "\n"
