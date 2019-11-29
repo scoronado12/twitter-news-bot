@@ -3,7 +3,6 @@
 import tweepy as tweet
 import feedparser as fp
 import time
-import datetime
 
 
 def main():
@@ -78,8 +77,6 @@ def formulate_bbc_tweet(api):
 
         #TODO send 7 tweets of four headlines
         bbc_feed = fp.parse("http://feeds.bbci.co.uk/news/world/rss.xml#")
-        current_date_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M hrs")
-
 
         headlines = []
 
@@ -117,7 +114,6 @@ def formulate_npr_tweet(api):
 
     try:
 
-        current_date_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M hrs")
 
         npr_feed = fp.parse("https://www.npr.org/rss/rss.php?id=1001")
         headlines = [] # list of strings
@@ -132,7 +128,7 @@ def formulate_npr_tweet(api):
 
         for i in range (5):
             if i == 0:
-                message = "From NPR News on " + current_date_time + "(" + str(i+1) + "/5)\n"
+                message = "From NPR News (" + str(i+1) + "/5)\n"
             else:
                 message = "("+ str(i+1) + "/5)\n"
 
