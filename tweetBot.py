@@ -33,8 +33,10 @@ def main():
 
     twitter = tweet.API(auth ,wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 
-    #formulate_npr_tweet(twitter)
-    #formulate_bbc_tweet(twitter)
+    formulate_npr_tweet(twitter)
+    time.sleep(10)
+    formulate_bbc_tweet(twitter)
+    time.sleep(10)
     formulate_nytimes_tweet(twitter)
     exit(0)
 
@@ -59,7 +61,7 @@ def formulate_nytimes_tweet(api):
                 message += headlines[indeces] + "\n"
 
             time.sleep(5)
-            #print(message)
+            print(message)
             api.update_status(message)
             low_range += 2
             high_range += 2
@@ -93,6 +95,7 @@ def formulate_bbc_tweet(api):
             for indeces in range(low_range, high_range):
                 message += headlines[indeces] + "\n"
             time.sleep(5) # eliminate possibility of getting ratelimited
+            print(message)
             api.update_status(message)
             low_range += 4
             high_range += 4
@@ -135,8 +138,8 @@ def formulate_npr_tweet(api):
             for indeces in range(low_range, high_range):
                 message += headlines[indeces] + "\n"
             time.sleep(5) # eliminate possibility of getting ratelimited
-            #print(len(message))
-            #api.update_status(message)
+            print(message)
+            api.update_status(message)
             low_range += 3
             high_range += 3
 
