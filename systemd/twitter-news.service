@@ -2,5 +2,6 @@
 Description=Twitter News Bot
 
 [Service]
+User=pi
 Type=oneshot
-ExecStart=/usr/bin/python3 ~/Code/tweetBot.py
+ExecStart=/usr/bin/python3 /home/pi/tweetBot.py
