@@ -18,5 +18,5 @@ Watching this one account on twitter tweet the headlines every hour.
 
 # Depends
 
-`pipenv` will handle pip dependencies for you.
+`pipenv` will handle pip dependencies for you. If not, then download `tweetpy` and `feedparser`
 
