@@ -3,7 +3,7 @@
 import tweepy as tweet
 import feedparser as fp
 import time
-
+import datetime
 
 def main():
 
@@ -32,42 +32,44 @@ def main():
     auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
 
     twitter = tweet.API(auth ,wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
-
-    formulate_npr_tweet(twitter)
-    time.sleep(10)
-    formulate_bbc_tweet(twitter)
-    time.sleep(10)
-    formulate_nytimes_tweet(twitter)
-    exit(0)
+    
+    try:
+        #formulate_npr_tweet(twitter)
+        #time.sleep(10)
+        formulate_bbc_tweet(twitter)
+        #time.sleep(10)
+        #formulate_nytimes_tweet(twitter)
+        exit(0)
+    except tweet.error.TweepError:
+        error_handler(twitter)
 
 def formulate_nytimes_tweet(api):
+
+
     print("Attempting to send NY Times Headlines")
-    try:
-        nytimes_feed = fp.parse("https://www.nytimes.com/svc/collections/v1/publish/https://www.nytimes.com/section/world/rss.xml")
+    nytimes_feed = fp.parse("https://www.nytimes.com/svc/collections/v1/publish/https://www.nytimes.com/section/world/rss.xml")
 
-        headlines = []
-        for i in range(len(nytimes_feed.entries)):
-            headlines.append(" - " + nytimes_feed.entries[i].title)
+    headlines = []
+    for i in range(len(nytimes_feed.entries)):
+        headlines.append(" - " + nytimes_feed.entries[i].title)
 
-        #for headline in headlines:
-            #print(headline)
+    #for headline in headlines:
+        #print(headline)
 
-        low_range = 0
-        high_range = 2
-        for i in range(5):
-            message = "From the NY Times (" + str(i+1)+ "/5)\n"
+    low_range = 0
+    high_range = 2
+    for i in range(5):
+        message = "From the NY Times (" + str(i+1)+ "/5)\n"
 
-            for indeces in range(low_range, high_range):
-                message += headlines[indeces] + "\n"
+        for indeces in range(low_range, high_range):
+            message += headlines[indeces] + "\n"
 
-            time.sleep(5)
-            print(message)
-            api.update_status(message)
-            low_range += 2
-            high_range += 2
+        time.sleep(5)
+        print(message)
+        api.update_status(message)
+        low_range += 2
+        high_range += 2
 
-    except tweet.error.TweepError:
-            error_handler(api)
 
 
 def formulate_bbc_tweet(api):
@@ -75,38 +77,31 @@ def formulate_bbc_tweet(api):
 
     print("Attempting to Send BBC Headlines")
 
-    try:
 
-        #TODO send 7 tweets of four headlines
-        bbc_feed = fp.parse("http://feeds.bbci.co.uk/news/world/rss.xml#")
+    #TODO send 7 tweets of four headlines
+    bbc_feed = fp.parse("http://feeds.bbci.co.uk/news/world/rss.xml#")
 
-        headlines = []
+    headlines = []
 
-        for i in range(len(bbc_feed.entries)):
-           headlines.append(" -  " + bbc_feed.entries[i].title)
+    for i in range(len(bbc_feed.entries)):
+       headlines.append(" -  " + bbc_feed.entries[i].title)
 
-        low_range = 0
-        high_range = 2
+    low_range = 0
+    high_range = 2
 
-        for i in range (14):
+    for i in range (14):
 
-            message = "("+ str(i+1) + "/14) BBC News\n" #tweaked to 14 tweets due to char limit
+        message = "("+ str(i+1) + "/14) BBC News\n" #tweaked to 14 tweets due to char limit
 
-            for indeces in range(low_range, high_range):
-                message += headlines[indeces] + "\n"
-            time.sleep(5) # eliminate possibility of getting ratelimited
-            print(len(message))
-            print(message)
-            api.update_status(message)
-            low_range += 2
-            high_range += 2
-
-
-
-
-    except tweet.error.TweepError:
-        error_handler(api)
-
+        for indeces in range(low_range, high_range):
+            message += headlines[indeces] + "\n"
+        time.sleep(5) # eliminate possibility of getting ratelimited
+        print(len(message))
+        
+        print(message)
+        api.update_status(message)
+        low_range += 2
+        high_range += 2
 
 def formulate_npr_tweet(api):
 
@@ -114,37 +109,34 @@ def formulate_npr_tweet(api):
                 a series of five tweets'''
     print("Attempting to send NPR Headlines")
 
-    try:
 
 
-        npr_feed = fp.parse("https://www.npr.org/rss/rss.php?id=1001")
-        headlines = [] # list of strings
+    npr_feed = fp.parse("https://www.npr.org/rss/rss.php?id=1001")
+    headlines = [] # list of strings
 
 
-        for i in range(15):
-            headlines.append(" - " + npr_feed.entries[i].title)
+    for i in range(15):
+        headlines.append(" - " + npr_feed.entries[i].title)
 
 
-        low_range = 0
-        high_range = 3
+    low_range = 0
+    high_range = 3
 
-        for i in range (5):
-            message = "From NPR News (" + str(i+1) + "/5)\n"
+    for i in range (5):
+        message = "From NPR News (" + str(i+1) + "/5)\n"
 
-            for indeces in range(low_range, high_range):
-                message += headlines[indeces] + "\n"
-            time.sleep(5) # eliminate possibility of getting ratelimited
-            print(message)
-            api.update_status(message)
-            low_range += 3
-            high_range += 3
+        for indeces in range(low_range, high_range):
+            message += headlines[indeces] + "\n"
+        time.sleep(5) # eliminate possibility of getting ratelimited
+        print(message)
+        api.update_status(message)
+        low_range += 3
+        high_range += 3
 
-    except tweet.error.TweepError:
-        error_handler(api)
 
 def error_handler(api):
-    api.update_status("Unfortunately, I have come across an error.\n
-                      @____neno will be notified")
+    current_date_time = datetime.now().strftime("%Y-%m-%d")
+    api.update_status("Unfortunately, I have come across an error.\n @____neno will be notified" + current_date_time)
 
 print("Bot is running")
 main()
