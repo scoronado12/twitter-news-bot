@@ -67,8 +67,8 @@ def formulate_nytimes_tweet(api):
             high_range += 2
 
     except tweet.error.TweepError:
-            print("An unknown error has occured")
-            exit(0)
+            error_handler(api)
+
 
 def formulate_bbc_tweet(api):
     '''This function aggregates the BBC world news feed and splits the headlines'''
@@ -86,27 +86,26 @@ def formulate_bbc_tweet(api):
            headlines.append(" -  " + bbc_feed.entries[i].title)
 
         low_range = 0
-        high_range = 4
+        high_range = 2
 
-        for i in range (7):
+        for i in range (14):
 
-            message = "("+ str(i+1) + "/7) BBC News\n"
+            message = "("+ str(i+1) + "/14) BBC News\n" #tweaked to 14 tweets due to char limit
 
             for indeces in range(low_range, high_range):
                 message += headlines[indeces] + "\n"
             time.sleep(5) # eliminate possibility of getting ratelimited
+            print(len(message))
             print(message)
             api.update_status(message)
-            low_range += 4
-            high_range += 4
+            low_range += 2
+            high_range += 2
 
 
 
 
     except tweet.error.TweepError:
-            print("An unknown error has occured")
-            exit(0)
-
+        error_handler(api)
 
 
 def formulate_npr_tweet(api):
@@ -141,8 +140,11 @@ def formulate_npr_tweet(api):
             high_range += 3
 
     except tweet.error.TweepError:
-        print("An unknown error has occured")
-        exit(0)
+        error_handler(api)
+
+def error_handler(api):
+    api.update_status("Unfortunately, I have come across an error.\n
+                      @____neno will be notified")
 
 print("Bot is running")
 main()
