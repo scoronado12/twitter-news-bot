@@ -34,11 +34,11 @@ def main():
     twitter = tweet.API(auth ,wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
     
     try:
-        #formulate_npr_tweet(twitter)
-        #time.sleep(10)
+        formulate_npr_tweet(twitter)
+        time.sleep(10)
         formulate_bbc_tweet(twitter)
-        #time.sleep(10)
-        #formulate_nytimes_tweet(twitter)
+        time.sleep(10)
+        formulate_nytimes_tweet(twitter)
         exit(0)
     except tweet.error.TweepError:
         error_handler(twitter)
