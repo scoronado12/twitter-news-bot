@@ -40,7 +40,7 @@ def main():
         time.sleep(10)
         formulate_nytimes_tweet(twitter)
         exit(0)
-    except tweet.error.TweepError:
+    except Exception: 
         error_handler(twitter)
 
 def formulate_nytimes_tweet(api):
