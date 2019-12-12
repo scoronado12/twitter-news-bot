@@ -3,7 +3,7 @@
 import tweepy as tweet
 import feedparser as fp
 import time
-import datetime
+import datetime as dt
 
 def main():
 
@@ -135,8 +135,8 @@ def formulate_npr_tweet(api):
 
 
 def error_handler(api):
-    current_date_time = datetime.now().strftime("%Y-%m-%d")
-    api.update_status("Unfortunately, I have come across an error.\n @____neno will be notified" + current_date_time)
+    current_date_time = dt.now().strftime("%Y-%m-%d")
+    api.update_status("Unfortunately, I have come across an error.\n @____neno will be notified " + current_date_time)
 
 print("Bot is running")
 main()
